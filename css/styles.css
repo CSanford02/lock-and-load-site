@@ -134,6 +134,10 @@ footer {
   color: white;
 }
 
+.hero {
+  margin-bottom: 60px;
+}
+
 .button {
   background: #C9A24A;
   color: black;
