@@ -130,12 +130,9 @@ footer {
 .hero {
   text-align: center;
   padding: 120px 20px;
+  margin-bottom: 60px;
   background: linear-gradient(#111111, #1e1e1e);
   color: white;
-}
-
-.hero {
-  margin-bottom: 60px;
 }
 
 .button {
