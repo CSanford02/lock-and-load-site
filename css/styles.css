@@ -455,3 +455,8 @@ button {
   font-size: 16px;
   cursor: pointer;
 }
+
+.services-preview,
+.services-section{
+  margin-top:80px;
+}
