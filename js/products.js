@@ -84,7 +84,11 @@ card.innerHTML = `
 
 ${priceSection}
 
-<textarea class="project-notes" placeholder="Project notes (optional)"></textarea>
+<button class="notes-toggle" onclick="toggleNotes(this)">
+Add Project Notes
+</button>
+
+<textarea class="project-notes" style="display:none;" placeholder="Project notes (optional)"></textarea>
 
 <input type="file" class="ref-image" accept="image/*" multiple>
 
@@ -100,3 +104,17 @@ grid.appendChild(card);
 container.appendChild(grid);
 
 });
+
+function toggleNotes(button){
+
+  const notesBox = button.nextElementSibling;
+
+  if(notesBox.style.display === "none"){
+    notesBox.style.display = "block";
+    button.textContent = "Hide Project Notes";
+  } else {
+    notesBox.style.display = "none";
+    button.textContent = "Add Project Notes";
+  }
+
+}
