@@ -92,7 +92,7 @@ Add Project Notes
 
 <input type="file" class="ref-image" accept="image/*" multiple>
 
-<button onclick="addProductToCart(this,'${product.name}',${product.price})">
+<button onclick="addProductToCart(this,'${product.name}')">
 Add to Cart
 </button>
 `;
