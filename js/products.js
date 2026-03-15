@@ -84,18 +84,22 @@ card.innerHTML = `
 
 ${priceSection}
 
+<div class="product-options">
+
 <button class="notes-toggle" onclick="toggleNotes(this)">
-Add Project Notes
+Notes
 </button>
 
-<textarea class="project-notes" style="display:none;" placeholder="Project notes (optional)"></textarea>
-
 <label class="upload-btn">
-Upload Reference Image
+Upload
 <input type="file" class="ref-image" accept="image/*" multiple>
 </label>
 
-<button onclick="addProductToCart(this,'${product.name}')">
+</div>
+
+<textarea class="project-notes" style="display:none;" placeholder="Project notes (optional)"></textarea>
+
+<button class="add-cart" onclick="addProductToCart(this,'${product.name}')">
 Add to Cart
 </button>
 `;
