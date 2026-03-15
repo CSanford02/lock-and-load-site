@@ -65,8 +65,6 @@ function addProductToCart(button, name){
   saveCart();
   updateCartCount();
 
-  alert("Added to cart");
-
 }
 
 // Display cart
