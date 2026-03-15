@@ -17,6 +17,23 @@ function updateCartCount(){
 
 }
 
+function showCartNotification(message = "Added to cart!") {
+  const notif = document.getElementById("cart-notification");
+  notif.textContent = message;
+  notif.style.display = "block";
+  notif.style.opacity = "1";
+
+  // fade out after 2 seconds
+  setTimeout(() => {
+    notif.style.transition = "opacity 0.5s ease";
+    notif.style.opacity = "0";
+    setTimeout(() => {
+      notif.style.display = "none";
+      notif.style.transition = "";
+    }, 500);
+  }, 2000);
+}
+
 // Save cart
 function saveCart(){
   localStorage.setItem("cart", JSON.stringify(cart));
