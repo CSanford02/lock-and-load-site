@@ -82,6 +82,8 @@ function addProductToCart(button, name){
   saveCart();
   updateCartCount();
 
+  showCartNotification();
+
 }
 
 // Display cart
