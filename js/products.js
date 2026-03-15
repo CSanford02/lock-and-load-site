@@ -2,7 +2,7 @@ const categories = [
 {
 category: "Deep Engraving",
 items: [
-{ name: "Handgun Slide", price: 249.99, image: "images/handgun-slide.jpg", desc: "Standard 7x5 engraving area" },
+{ name: "Handgun Slide", price: 249.99, image: "images/handgun-slide2.jpg", desc: "Standard 7x5 engraving area" },
 { name: "Handgun Lower (Full)", price: 249.99, image: "images/handgun-lower.jpg", desc: "Price adjustable depending on work" },
 { name: "Handgun Small Parts", price: 79.99, image: "images/handgun-parts.jpg", desc: "Trigger, safety, grip safety, hammer, slide release" },
 { name: "Handgun Magazine", price: 29.99, image: "images/handgun-mag.jpg", desc: "Magazine engraving" },
@@ -67,7 +67,7 @@ let priceSection = "";
 
 if(product.price !== null){
 
-priceSection = `<p class="price">$${product.price}</p>`;
+priceSection = `<p class="price">$${product.price.toFixed(2)}</p>`;
 
 }else{
 
@@ -92,7 +92,7 @@ Project Notes
 
 <label class="upload-btn">
 Reference Image
-<input type="file" class="ref-image" accept="image/*" multiple>
+<input type="file" class="ref-image" accept="image/*" multiple hidden>
 </label>
 
 </div>
@@ -103,7 +103,7 @@ Reference Image
 Add to Cart
 </button>
 `;
-  
+
 grid.appendChild(card);
 
 });
@@ -114,13 +114,91 @@ container.appendChild(grid);
 
 function toggleNotes(button){
 
-  const card = button.closest(".product");
-  const notesBox = card.querySelector(".project-notes");
+const card = button.closest(".product");
+const notesBox = card.querySelector(".project-notes");
 
-  if(notesBox.style.display === "none" || notesBox.style.display === ""){
-    notesBox.style.display = "block";
-  } else {
-    notesBox.style.display = "none";
-  }
+if(notesBox.style.display === "none" || notesBox.style.display === ""){
+notesBox.style.display = "block";
+}else{
+notesBox.style.display = "none";
+}
 
 }
+
+function addProductToCart(button,name){
+
+const card = button.closest(".product");
+
+let price = 0;
+
+const customPrice = card.querySelector(".custom-price");
+
+if(customPrice){
+price = parseFloat(customPrice.value);
+
+if(isNaN(price)){
+alert("Please enter a price before adding to cart.");
+return;
+}
+
+}else{
+const priceElement = card.querySelector(".price");
+price = parseFloat(priceElement.textContent.replace("$",""));
+}
+
+const notesBox = card.querySelector(".project-notes");
+const notes = notesBox ? notesBox.value : "";
+
+const item = {
+name: name,
+price: price,
+quantity: 1,
+notes: notes
+};
+
+cart.push(item);
+
+saveCart();
+updateCartCount();
+
+alert("Added to cart");
+
+}
+
+// IMAGE MODAL ZOOM
+
+document.addEventListener("DOMContentLoaded", function(){
+
+const modal = document.getElementById("image-modal");
+const modalImg = document.getElementById("modal-img");
+const closeBtn = document.querySelector(".close-modal");
+
+// open modal when product image clicked
+document.addEventListener("click", function(e){
+
+if(e.target.tagName === "IMG" && e.target.closest(".product")){
+
+modal.style.display = "block";
+modalImg.src = e.target.src;
+
+}
+
+});
+
+// close modal with X
+closeBtn.addEventListener("click", function(){
+
+modal.style.display = "none";
+
+});
+
+// close modal when clicking outside image
+modal.addEventListener("click", function(e){
+
+if(e.target === modal){
+modal.style.display = "none";
+}
+
+});
+
+});
