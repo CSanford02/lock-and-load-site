@@ -96,9 +96,6 @@ Add Project Notes
 Add to Cart
 </button>
 `;
-
-<label class="upload-label">Upload Reference Photos</label>
-<input type="file" class="ref-image" accept="image/*" multiple>
   
 grid.appendChild(card);
 
