@@ -7,7 +7,7 @@ items: [
 { name: "Handgun Small Parts", price: 79.99, image: "images/handgun-parts.jpg", desc: "Trigger, safety, grip safety, hammer, slide release" },
 { name: "Handgun Magazine", price: 29.99, image: "images/handgun-mag.jpg", desc: "Magazine engraving" },
 { name: "AR-15 Upper Receiver", price: 149.99, image: "images/ar-upper.jpg", desc: "Deep engraved upper receiver (Prices vary based on complexity)" },
-{ name: "AR-15 Lower Receiver", price: 249.99, image: "images/ar-lower.jpg", desc: "Deep engraved lower receiver" },
+{ name: "AR-15 Lower Receiver", price: 149.99, image: "images/ar-lower.jpg", desc: "Deep engraved lower receiver (Prices vary based on complexity)" },
 { name: "AR-15 Handguard / Forend", price: 129.99, image: "images/ar-handguard.jpg", desc: "6x4 engraving area (price adjustable)" },
 { name: "AR-15 Pistol Grip", price: 29.99, image: "images/ar-grip.jpg", desc: "Grip engraving" },
 { name: "AR-15 Small Parts", price: 59.99, image: "images/ar-small.jpg", desc: "Trigger, safety, magazine release" },
