@@ -491,3 +491,22 @@ width:100%;
 background:#9A7A32;
 }
 
+.upload-btn{
+display:block;
+margin-top:10px;
+background:#C9A24A;
+color:black;
+padding:8px 12px;
+border-radius:6px;
+text-align:center;
+font-weight:bold;
+cursor:pointer;
+}
+
+.upload-btn:hover{
+background:#9A7A32;
+}
+
+.upload-btn input{
+display:none;
+}
