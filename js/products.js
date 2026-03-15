@@ -90,7 +90,10 @@ Add Project Notes
 
 <textarea class="project-notes" style="display:none;" placeholder="Project notes (optional)"></textarea>
 
+<label class="upload-btn">
+Upload Reference Image
 <input type="file" class="ref-image" accept="image/*" multiple>
+</label>
 
 <button onclick="addProductToCart(this,'${product.name}')">
 Add to Cart
