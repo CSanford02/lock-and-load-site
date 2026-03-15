@@ -510,3 +510,36 @@ background:#9A7A32;
 .upload-btn input{
 display:none;
 }
+
+.product-options{
+display:flex;
+gap:10px;
+margin-top:10px;
+}
+
+.notes-toggle,
+.upload-btn{
+flex:1;
+font-size:14px;
+padding:6px 8px;
+background:#C9A24A;
+color:black;
+border-radius:6px;
+text-align:center;
+cursor:pointer;
+font-weight:bold;
+}
+
+.upload-btn input{
+display:none;
+}
+
+.notes-toggle:hover,
+.upload-btn:hover{
+background:#9A7A32;
+}
+
+.add-cart{
+margin-top:12px;
+width:100%;
+}
