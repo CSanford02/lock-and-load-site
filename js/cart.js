@@ -169,22 +169,44 @@ priceInput.value = "";
 
 }
 
-function addProductToCart(button, name, basePrice){
+function addProductToCart(button, name){
 
-const card = button.parentElement;
+  const card = button.closest(".product");
 
-let price = basePrice;
+  let price = 0;
 
-if(price === null){
+  // Check if the product has a custom price input
+  const customPrice = card.querySelector(".custom-price");
 
-const priceInput = card.querySelector(".custom-price");
+  if(customPrice){
+    price = parseFloat(customPrice.value);
 
-price = parseFloat(priceInput.value);
+    if(isNaN(price)){
+      alert("Please enter a price before adding to cart.");
+      return;
+    }
 
-if(isNaN(price) || price <= 0){
-alert("Please enter a valid price.");
-return;
-}
+  } else {
+
+    const priceText = card.querySelector(".price").textContent;
+    price = parseFloat(priceText.replace("$",""));
+
+  }
+
+  const notesBox = card.querySelector(".project-notes");
+  const notes = notesBox ? notesBox.value : "";
+
+  const cartItem = {
+    name: name,
+    price: price,
+    quantity: 1,
+    notes: notes
+  };
+
+  cart.push(cartItem);
+
+  saveCart();
+  updateCartCount();
 
 }
 
