@@ -87,11 +87,11 @@ ${priceSection}
 <div class="product-options">
 
 <button class="notes-toggle" onclick="toggleNotes(this)">
-Notes
+Project Notes
 </button>
 
 <label class="upload-btn">
-Upload
+Reference Image
 <input type="file" class="ref-image" accept="image/*" multiple>
 </label>
 
