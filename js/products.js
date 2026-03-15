@@ -114,14 +114,13 @@ container.appendChild(grid);
 
 function toggleNotes(button){
 
-  const notesBox = button.nextElementSibling;
+  const card = button.closest(".product");
+  const notesBox = card.querySelector(".project-notes");
 
-  if(notesBox.style.display === "none"){
+  if(notesBox.style.display === "none" || notesBox.style.display === ""){
     notesBox.style.display = "block";
-    button.textContent = "Hide Project Notes";
   } else {
     notesBox.style.display = "none";
-    button.textContent = "Add Project Notes";
   }
 
 }
