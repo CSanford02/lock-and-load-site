@@ -2,31 +2,106 @@
 <html lang="en">
 <head>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Your Shopping Cart</title>
-  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-
-  <div id="cart-notification" style="position: fixed; top: 20px; right: 20px; background: #C9A24A; color: black; padding: 12px 20px; border-radius: 6px; font-weight: bold; display: none; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
-  Added to cart!
-</div>
-  
   <header class="site-header">
-  <nav class="main-nav">
-    <a href="index.html">Home</a>
-    <a href="parts.html">Services</a>
-    <a href="contact.html">Contact</a>
-    <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
-  </nav>
-</header>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="parts.html">Services</a>
+      <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
 
-  <main style="max-width:1000px; margin:auto; padding:40px 20px;">
+  <main class="cart-page">
     <h2>Your Cart</h2>
+
     <div id="cart-items"></div>
-    <p id="cart-total" style="font-weight:bold; font-size:18px; margin-top:20px;"></p>
-    <button id="clear-cart" style="background:#c0392b; color:white; padding:10px 16px; border:none; border-radius:6px; cursor:pointer;">Clear Cart</button>
+    <p id="cart-total"></p>
+
+    <div class="cart-actions">
+      <button id="clear-cart" class="danger-btn" type="button">Clear Cart</button>
+    </div>
+
+    <section class="checkout-section">
+      <h2>Checkout / Request Quote</h2>
+      <p class="checkout-intro">
+        Enter your information below and submit your order request. We’ll receive your cart,
+        pricing, project notes, and any reference images you attach.
+      </p>
+
+      <form
+        id="checkout-form"
+        action="https://formsubmit.co/tntmachineworkz@gmail.com"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <input type="hidden" name="_subject" value="New Lock and Load Supply Co. Order Request">
+        <input type="hidden" name="_next" value="thank-you.html">
+        <input type="hidden" name="_captcha" value="false">
+
+        <input type="hidden" name="order_summary" id="order-summary-field">
+        <input type="hidden" name="order_total" id="order-total-field">
+
+        <div class="checkout-grid">
+          <div class="form-group">
+            <label for="first-name">First Name</label>
+            <input id="first-name" name="first_name" type="text" required>
+          </div>
+
+          <div class="form-group">
+            <label for="last-name">Last Name</label>
+            <input id="last-name" name="last_name" type="text" required>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input id="email" name="email" type="email" required>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number <span class="optional">(Optional)</span></label>
+            <input id="phone" name="phone" type="tel">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="preferred-contact">Preferred Contact Method</label>
+          <select id="preferred-contact" name="preferred_contact">
+            <option value="Email">Email</option>
+            <option value="Phone">Phone</option>
+            <option value="Either">Either</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="reference-images">Reference Images</label>
+          <input id="reference-images" name="attachment" type="file" accept="image/*" multiple>
+          <p class="helper-text">Attach any project reference images here.</p>
+        </div>
+
+        <div class="form-group">
+          <label for="order-notes">Order Notes</label>
+          <textarea
+            id="order-notes"
+            name="order_notes"
+            rows="6"
+            placeholder="Anything else you'd like us to know about your order, timing, finishes, engraving placement, etc."
+          ></textarea>
+        </div>
+
+        <div class="checkout-summary-box">
+          <h3>Order Summary Preview</h3>
+          <pre id="checkout-summary-preview"></pre>
+        </div>
+
+        <button id="submit-order" class="checkout-btn" type="submit">Submit Order Request</button>
+      </form>
+    </section>
   </main>
 
   <footer>
@@ -34,10 +109,5 @@
   </footer>
 
   <script src="js/cart.js"></script>
-
-  <a href="cart.html" class="floating-cart">
-🛒 <span id="cart-count">0</span>
-</a>
-
 </body>
 </html>
