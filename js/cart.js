@@ -1,102 +1,82 @@
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-// Update cart count in header
-function updateCartCount(){
+// Normalize old cart data so it doesn't break totals/quantities
+cart = cart.map(item => ({
+  name: item.name || "Unnamed Item",
+  price: Number(item.price) || 0,
+  quantity: Number(item.quantity) || 1,
+  notes: item.notes || ""
+}));
 
-  const counters = document.querySelectorAll("#cart-count");
-
-  let total = 0;
-
-  cart.forEach(item=>{
-    total += item.quantity;
-  });
-
-  counters.forEach(counter=>{
-    counter.textContent = total;
-  });
-
-}
-
-function showCartNotification(message = "Added to cart!") {
-  const notif = document.getElementById("cart-notification");
-  notif.textContent = message;
-  notif.style.display = "block";
-  notif.style.opacity = "1";
-
-  // fade out after 2 seconds
-  setTimeout(() => {
-    notif.style.transition = "opacity 0.5s ease";
-    notif.style.opacity = "0";
-    setTimeout(() => {
-      notif.style.display = "none";
-      notif.style.transition = "";
-    }, 500);
-  }, 2000);
-}
-
-// Save cart
-function saveCart(){
+function saveCart() {
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-// Add product to cart
-function addProductToCart(button, name){
+function updateCartCount() {
+  const counters = document.querySelectorAll("#cart-count");
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
+  counters.forEach(counter => {
+    counter.textContent = totalItems;
+  });
+}
+
+function addProductToCart(button, name) {
   const card = button.closest(".product");
+  if (!card) return;
 
   let price = 0;
+  const customPriceInput = card.querySelector(".custom-price");
 
-  const customPrice = card.querySelector(".custom-price");
+  if (customPriceInput) {
+    price = parseFloat(customPriceInput.value);
 
-  if(customPrice){
-    price = parseFloat(customPrice.value);
-
-    if(isNaN(price)){
-      alert("Please enter a price.");
+    if (isNaN(price) || price <= 0) {
+      alert("Please enter a valid price before adding this item.");
       return;
     }
-
-  }else{
-
-    const priceText = card.querySelector(".price").textContent;
-    price = parseFloat(priceText.replace("$",""));
-
+  } else {
+    const priceElement = card.querySelector(".price");
+    if (!priceElement) {
+      alert("Price could not be found for this item.");
+      return;
+    }
+    price = parseFloat(priceElement.textContent.replace("$", ""));
   }
 
   const notesBox = card.querySelector(".project-notes");
-  const notes = notesBox ? notesBox.value : "";
+  const notes = notesBox ? notesBox.value.trim() : "";
 
-  const existing = cart.find(item => item.name === name && item.notes === notes);
+  const existing = cart.find(
+    item => item.name === name && item.notes === notes && item.price === price
+  );
 
-  if(existing){
+  if (existing) {
     existing.quantity += 1;
-  }else{
+  } else {
     cart.push({
-      name: name,
-      price: price,
+      name,
+      price,
       quantity: 1,
-      notes: notes
+      notes
     });
   }
 
   saveCart();
   updateCartCount();
-
-  showCartNotification();
-
+  displayCart();
+  updateCheckoutSummary();
 }
 
-// Display cart
-function displayCart(){
-
+function displayCart() {
   const cartItemsDiv = document.getElementById("cart-items");
   const cartTotalP = document.getElementById("cart-total");
 
-  if(!cartItemsDiv || !cartTotalP) return;
+  if (!cartItemsDiv || !cartTotalP) return;
 
   cartItemsDiv.innerHTML = "";
 
-  if(cart.length === 0){
+  if (cart.length === 0) {
     cartItemsDiv.innerHTML = "<p>Your cart is empty.</p>";
     cartTotalP.textContent = "";
     return;
@@ -104,94 +84,135 @@ function displayCart(){
 
   let total = 0;
 
-  cart.forEach((item,index)=>{
+  cart.forEach((item, index) => {
+    const itemTotal = item.price * item.quantity;
+    total += itemTotal;
 
     const div = document.createElement("div");
     div.className = "cart-item";
 
-    const itemTotal = item.price * item.quantity;
-
     div.innerHTML = `
+      <div class="cart-info">
+        <span class="cart-name">${item.name}</span>
+        ${item.notes ? `<p class="cart-notes"><strong>Project Notes:</strong> ${escapeHtml(item.notes)}</p>` : ""}
+      </div>
 
-    <div class="cart-info">
+      <div class="cart-qty">
+        <button type="button" onclick="changeQty(${index}, -1)">−</button>
+        <span>${item.quantity}</span>
+        <button type="button" onclick="changeQty(${index}, 1)">+</button>
+      </div>
 
-    <span class="cart-name">${item.name}</span>
+      <span class="cart-price">$${itemTotal.toFixed(2)}</span>
 
-    ${item.notes ? `<p class="cart-notes">${item.notes}</p>` : ""}
-
-    <div class="cart-qty">
-      <button onclick="changeQty(${index},-1)">−</button>
-      <span>${item.quantity}</span>
-      <button onclick="changeQty(${index},1)">+</button>
-    </div>
-
-    <span class="cart-price">$${itemTotal.toFixed(2)}</span>
-
-    <button onclick="removeItem(${index})">Remove</button>
-
-    </div>
+      <button type="button" class="remove-btn" onclick="removeItem(${index})">Remove</button>
     `;
 
     cartItemsDiv.appendChild(div);
-
-    total += itemTotal;
-
   });
 
   cartTotalP.textContent = `Total: $${total.toFixed(2)}`;
-
 }
 
-function removeItem(index){
-
-  cart.splice(index,1);
-
-  saveCart();
-
-  updateCartCount();
-
-  displayCart();
-
-}
-
-function changeQty(index, amount){
+function changeQty(index, amount) {
+  if (!cart[index]) return;
 
   cart[index].quantity += amount;
 
-  if(cart[index].quantity <= 0){
-    cart.splice(index,1);
+  if (cart[index].quantity <= 0) {
+    cart.splice(index, 1);
   }
 
   saveCart();
-
   updateCartCount();
-
   displayCart();
-
+  updateCheckoutSummary();
 }
 
-function clearCart(){
-
-  cart = [];
-
+function removeItem(index) {
+  cart.splice(index, 1);
   saveCart();
-
   updateCartCount();
-
   displayCart();
-
+  updateCheckoutSummary();
 }
 
-document.addEventListener("DOMContentLoaded", ()=>{
-
+function clearCart() {
+  cart = [];
+  saveCart();
   updateCartCount();
-
   displayCart();
+  updateCheckoutSummary();
+}
+
+function buildOrderSummary() {
+  if (cart.length === 0) {
+    return "Cart is empty.";
+  }
+
+  let total = 0;
+
+  const lines = cart.map(item => {
+    const itemTotal = item.price * item.quantity;
+    total += itemTotal;
+
+    let line = `${item.name} — Qty: ${item.quantity} — Unit Price: $${item.price.toFixed(2)} — Item Total: $${itemTotal.toFixed(2)}`;
+
+    if (item.notes) {
+      line += `\n  Project Notes: ${item.notes}`;
+    }
+
+    return line;
+  });
+
+  lines.push("");
+  lines.push(`Grand Total: $${total.toFixed(2)}`);
+
+  return lines.join("\n");
+}
+
+function updateCheckoutSummary() {
+  const summaryText = buildOrderSummary();
+  const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+  const summaryField = document.getElementById("order-summary-field");
+  const totalField = document.getElementById("order-total-field");
+  const preview = document.getElementById("checkout-summary-preview");
+
+  if (summaryField) summaryField.value = summaryText;
+  if (totalField) totalField.value = `$${total.toFixed(2)}`;
+  if (preview) preview.textContent = summaryText;
+}
+
+function escapeHtml(str) {
+  return str
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  updateCartCount();
+  displayCart();
+  updateCheckoutSummary();
 
   const clearBtn = document.getElementById("clear-cart");
-
-  if(clearBtn){
+  if (clearBtn) {
     clearBtn.addEventListener("click", clearCart);
   }
 
+  const checkoutForm = document.getElementById("checkout-form");
+  if (checkoutForm) {
+    checkoutForm.addEventListener("submit", (e) => {
+      if (cart.length === 0) {
+        e.preventDefault();
+        alert("Your cart is empty.");
+        return;
+      }
+
+      updateCheckoutSummary();
+    });
+  }
 });
