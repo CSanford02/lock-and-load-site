@@ -569,3 +569,19 @@ font-style:italic;
     grid-template-columns:1fr;
   }
 }
+
+.cart-totals{
+margin-top:20px;
+text-align:right;
+font-size:18px;
+}
+
+.cart-totals p{
+margin:4px 0;
+}
+
+#cart-total{
+font-size:22px;
+color:#C9A24A;
+font-weight:bold;
+}
