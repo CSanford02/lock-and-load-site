@@ -70,6 +70,8 @@ function addProductToCart(button, name) {
 
 function displayCart() {
   const cartItemsDiv = document.getElementById("cart-items");
+  const subtotalP = document.getElementById("cart-subtotal");
+  const taxP = document.getElementById("cart-tax");
   const cartTotalP = document.getElementById("cart-total");
 
   if (!cartItemsDiv || !cartTotalP) return;
@@ -111,7 +113,13 @@ function displayCart() {
     cartItemsDiv.appendChild(div);
   });
 
-  cartTotalP.textContent = `Total: $${total.toFixed(2)}`;
+  const taxRate = 0.0675;
+  const tax = total * taxRate;
+  const finalTotal = total + tax;
+
+  subtotalP.textContent = `Subtotal: $${total.toFixed(2)}`;
+  taxP.textContent = `Sales Tax (6.75%): $${tax.toFixed(2)}`;
+  cartTotalP.textContent = `Total: $${finalTotal.toFixed(2)}`;
 }
 
 function changeQty(index, amount) {
@@ -166,7 +174,13 @@ function buildOrderSummary() {
   });
 
   lines.push("");
-  lines.push(`Grand Total: $${total.toFixed(2)}`);
+  const taxRate = 0.0675;
+  const tax = total * taxRate;
+  const finalTotal = total + tax;
+
+  lines.push(`Subtotal: $${total.toFixed(2)}`);
+  lines.push(`Sales Tax (6.75%): $${tax.toFixed(2)}`);
+  lines.push(`Grand Total: $${finalTotal.toFixed(2)}`);
 
   return lines.join("\n");
 }
